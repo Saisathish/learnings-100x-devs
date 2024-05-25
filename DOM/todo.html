@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo</title>
+</head>
+
+<body>
+  <input id="title" type="text" placeholder="title"><br>
+  <input id="description" type="text" placeholder="description"><br>
+  <button onclick="addTodo()">Add Todo</button>
+  <div id="container"></div>
+
+  <script>
+    let id = 1;
+    function addTodo() {
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+
+      // Ugly Method
+      // const originalHtml = document.getElementById("container").innerHTML;
+      // document.getElementById("container").innerHTML = originalHtml + `
+      // <div>
+      //   <p>${title}</p>
+      //   <p>${description}</p>
+      //   <button>Mark as Done</button>
+      // </div>
+      // `;
+
+      // CreatElement way
+      document.getElementById("container").appendChild(createChild(title, description, id));
+      id++;
+    };
+
+    function createChild(title, description, id) {
+      const titleDiv = document.createElement("div");
+      titleDiv.innerHTML = title;
+      const descDiv = document.createElement("div");
+      descDiv.innerHTML = description;
+      const button = document.createElement("button");
+      button.innerHTML = "Mark as Done";
+      button.setAttribute("onclick", `onDone(${id})`)
+      button.setAttribute("id", id)
+      const parentDiv = document.createElement("div");
+      parentDiv.appendChild(titleDiv);
+      parentDiv.appendChild(descDiv);
+      parentDiv.appendChild(button);
+
+      return parentDiv;
+    }
+
+    function onDone(id) {
+      document.getElementById(id).innerHTML = "Done!"
+    }
+  </script>
+</body>
+
+</html>

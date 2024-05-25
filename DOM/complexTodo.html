@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo</title>
+</head>
+
+<body>
+  <input id="title" type="text" placeholder="title"><br>
+  <input id="description" type="text" placeholder="description"><br>
+  <button onclick="addTodo()">Add Todo</button>
+  <div id="container"></div>
+
+  <script>
+    let globalId = 1;
+    let state = [{
+      id: 1,
+      title: "title1",
+      description: "description1"
+    }]
+
+    // createBasedOnState(state);
+
+    function addTodo() {
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      globalId++;
+      state.push({
+        id: globalId,
+        title: title,
+        description: description
+      });
+
+      createBasedOnState(state);
+    };
+
+    function createBasedOnState(state) {
+      const grandParentDiv = document.getElementById("container");
+      grandParentDiv.innerHTML = "";
+      for (let i = 0; i < state.length; i++) {
+        const parentDiv = createChild(state[i].title, state[i].description, state[i].id);
+        grandParentDiv.appendChild(parentDiv);
+      }
+
+    }
+
+    function createChild(title, description, id) {
+      const titleDiv = document.createElement("div");
+      titleDiv.innerHTML = title;
+      const descDiv = document.createElement("div");
+      descDiv.innerHTML = description;
+      const button = document.createElement("button");
+      button.innerHTML = "Mark as Done";
+      button.setAttribute("onclick", `onDone(${id})`)
+      button.setAttribute("id", id)
+      const parentDiv = document.createElement("div");
+      parentDiv.appendChild(titleDiv);
+      parentDiv.appendChild(descDiv);
+      parentDiv.appendChild(button);
+
+      return parentDiv;
+    }
+
+    function onDone(id) {
+      document.getElementById(id).innerHTML = "Done!"
+    }
+
+    async function fetchTodos() {
+      const response = await fetch("https://sum-server.100xdevs.com/todos");
+      const data = await response.json();
+      state = data["todos"];
+      createBasedOnState(state);
+    }
+
+    fetchTodos();
+  </script>
+</body>
+
+</html>
