@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb+srv://admin:admin1234@cluster0.xsswcuc.mongodb.net/todos");
+mongoose.connect(""); // mongo keys
 
 const todosSchema = mongoose.Schema({
   title: String,
