@@ -7,11 +7,23 @@ mongoose.connect(
   "mongodb+srv://admin:admin1234@cluster0.xsswcuc.mongodb.net/userappnew",
 );
 
-const User = mongoose.model("User", {
+const UserSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
-});
+  // purchasedCourses: [{
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Course'
+  // }]
+})
+
+// const CourseSChema = new mongoose.Schema({
+//   title: String,
+//   price: Number
+// })
+
+const User = mongoose.model("User", UserSchema);
+// const Course = mongoose.model("Course", CourseSChema);
 
 const app = express();
 app.use(express.json());
